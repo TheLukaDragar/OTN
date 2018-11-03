@@ -10,6 +10,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.support.v4.app.NotificationCompat;
@@ -18,14 +21,17 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Layout;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -33,6 +39,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
 import java.util.Locale;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String SECONDS = "seconds";
     EditText ed2;
     ImageButton  b2;
-    EditText editText1;
     Button button;
     TextView textView;
 
@@ -53,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private final int NOTIFICATION_ID = 1;
     private AdView mAdView;
     String text10;
-    String sekunde10;
+   // String sekunde10;
     // Obtain the FirebaseAnalytics instance.
 
     private static final long START_TIME_IN_MILLIS = 600000;
@@ -77,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         loadData();
 
         mEditTextInput = findViewById(R.id.edit_text_input);
@@ -108,12 +114,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mButtonStartPause.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 if (mTimerRunning) {
                     pauseTimer();
+                    stopService();
                 } else {
                     startTimer();
+                    startService();
+
                 }
             }
         });
@@ -172,71 +182,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        editText1 = (EditText)findViewById(R.id.edittext2);
-        editText1.setText(sekunde10);
-        editText1.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                saveData();
-
-            }
-        });
-        textView = (TextView) findViewById(R.id.textView);
-        button = (Button) findViewById(R.id.button2);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                 sekunde10 = editText1.getText().toString();
-                if (!sekunde10.equalsIgnoreCase("")) {
 
 
-                    final Integer seconds = Integer.valueOf(sekunde10);
-                     CountDownTimer countDownTimer = new CountDownTimer(seconds * 1000, 1000) {
-                        @Override
-                        public void onTick(long millis) {
-                            textView.setText("seconds: " + (int) (millis / 1000));
-
-                        }
-
-                        @Override
-                        public void onFinish() {
-                            textView.setText(R.string.onfinishtoast);
-                            Toast.makeText(getApplicationContext(), "SENDING",
-                                    Toast.LENGTH_SHORT).show();
-
-
-                            dej();
-                            saveData();
-
-
-
-
-
-
-
-
-
-
-
-                        }
-
-                    }.start();
-
-                }
-            }
-        });
 
 
 
@@ -260,9 +207,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                Toast.makeText(getApplicationContext(), "after",
-                        Toast.LENGTH_SHORT).show();
                 saveData();
+               // color();
 
             }
         });
@@ -288,6 +234,16 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    //private void color() {
+      //  Random rnd = new Random();
+        //int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        //final Drawable drawable = new ColorDrawable(color);
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //toolbar.(drawable);
+      //  }
+
+    //}
 
     private void setTime(long milliseconds) {
         mStartTimeInMillis = milliseconds;
@@ -449,45 +405,44 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor =sharedPreferences.edit();
 
         editor.putString(TEXT,ed2.getText().toString());
-        editor.putString(SECONDS,editText1.getText().toString());
+      //  editor.putString(SECONDS,editText1.getText().toString());
         editor.apply();
-    }
+   }
     private void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         text10 = sharedPreferences.getString(TEXT,"");
-        sekunde10 = sharedPreferences.getString(SECONDS, "");
 
     }
 
 
-    private void dej() {
-        EditText text = (EditText)findViewById(R.id.edittext);
-        String value = text.getText().toString();
+   // private void dej() {
+       // EditText text = (EditText)findViewById(R.id.edittext);
+        //String value = text.getText().toString();
 
-        createNotificationChannel2();
+      //  createNotificationChannel2();
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID2)
-                .setSmallIcon(R.mipmap.ic_launcher_round)
-                .setContentTitle(getString(R.string.namen))
-                .setContentText(value)
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setAutoCancel(true)
-                .setContentIntent(PendingIntent.getActivity(this, 0, new Intent(), 0))
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(value));
-
-
+        //NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID2)
+               // .setSmallIcon(R.mipmap.ic_launcher_round)
+               // .setContentTitle(getString(R.string.namen))
+               // .setContentText(value)
+               // .setPriority(NotificationCompat.PRIORITY_MAX)
+               // .setAutoCancel(true)
+               // .setContentIntent(PendingIntent.getActivity(this, 0, new Intent(), 0))
+               // .setStyle(new NotificationCompat.BigTextStyle().bigText(value));
 
 
 
 
 
-        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
 
 
-        notificationManagerCompat.notify(NOTIFICATION_ID2,builder.build());
-        notificationManagerCompat.cancel(NOTIFICATION_ID);
+        //NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
 
-    }
+
+       // notificationManagerCompat.notify(NOTIFICATION_ID2,builder.build());
+       // notificationManagerCompat.cancel(NOTIFICATION_ID);
+
+    //}
 
 
     public void obvestilo(View view) {
@@ -545,54 +500,53 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void  createNotificationChannel2()
-    {
+   // private void  createNotificationChannel2()
+   // {
 
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O)
-        {
+       // if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O)
+       // {
 
-            CharSequence name = "Personal Notifications";
-            String description = "Include all the personal notifications";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+           // CharSequence name = "Personal Notifications";
+           // String description = "Include all the personal notifications";
+           // int importance = NotificationManager.IMPORTANCE_DEFAULT;
 
-            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID2,name,importance);
+            //NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID2,name,importance);
 
-            notificationChannel.setDescription(description);
+            //notificationChannel.setDescription(description);
 
-            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            assert notificationManager != null;
-            notificationManager.createNotificationChannel(notificationChannel);
-
-
-        }
+           // NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+           // assert notificationManager != null;
+           // notificationManager.createNotificationChannel(notificationChannel);
 
 
+      //  }
 
-    }
+
+
+  //  }
 
     public void clear(View view) {
         ed2.setText("");
 
 
     }
-    public void onBackPressed () {
-        Toast.makeText(getApplicationContext(), "New OTN feature soon!",
-                Toast.LENGTH_SHORT).show();
-        moveTaskToBack (true);
-        saveData();
-    }
+   // public void onBackPressed () {
+     //   moveTaskToBack (true);
+       // saveData();
+    //}
 
 
-    public void startService(View v) {
+    public void startService() {
 
-        String input= textView.getText().toString();
+
+       // String input= textView.getText().toString();
         Intent serviceIntent = new Intent(this, ExampleService.class);
-        serviceIntent.putExtra("InputExtra", input);
+       // serviceIntent.putExtra("InputExtra", input);
 
         ContextCompat.startForegroundService(this,serviceIntent);
     }
 
-    public void stopService(View v) {
+    public void stopService() {
         Intent serviceIntent = new Intent(this, ExampleService.class);
         stopService(serviceIntent);
 

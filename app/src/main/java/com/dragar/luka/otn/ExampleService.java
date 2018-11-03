@@ -48,7 +48,7 @@ public class ExampleService extends Service {
 
     @Override
     public void onCreate() {
-        Toast.makeText(getApplicationContext(), "service on creare",
+        Toast.makeText(getApplicationContext(), "OTN will notify ",
                 Toast.LENGTH_SHORT).show();
         loadData();
 
@@ -59,7 +59,6 @@ public class ExampleService extends Service {
     private void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         text = sharedPreferences.getString(TEXT,"");
-        sekunde =sharedPreferences.getString(SECONDS,"");
         SharedPreferences prefs2 = getSharedPreferences("prefs2", MODE_PRIVATE);
 
         mStartTimeInMillis2 = prefs2.getLong("startTimeInMillis2", 600000);
@@ -74,41 +73,10 @@ public class ExampleService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         startTimer();
 
-        if (!sekunde.equalsIgnoreCase("")) {
-
-
-            final Integer seconds = Integer.valueOf(sekunde);
-            CountDownTimer countDownTimer = new CountDownTimer(seconds * 1000, 1000) {
-                @Override
-                public void onTick(long millis) {
-
-                }
-
-                @Override
-                public void onFinish() {
-                    Toast.makeText(getApplicationContext(), "kr dela ",
-                            Toast.LENGTH_SHORT).show();
-                    finito();
+       // if (!sekunde.equalsIgnoreCase("")) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-                }
-
-            }.start();
-
-        }
 
 
 
@@ -121,7 +89,7 @@ public class ExampleService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,notificationIntent,0);
 
         Notification notification = new NotificationCompat.Builder(this, APP.CHANNEL_ID3)
-                .setContentTitle("STANDBY")
+                .setContentTitle("new feature soon")
                 .setContentText(input)
                 .setSmallIcon(R.drawable.ic_android)
                 .setContentIntent(pendingIntent)
@@ -132,28 +100,6 @@ public class ExampleService extends Service {
 
         return START_NOT_STICKY;
 
-    }
-
-    private void finito() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID4)
-                .setSmallIcon(R.mipmap.ic_launcher_round)
-
-                .setContentTitle(getString(R.string.namen))
-                .setContentText(text)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
-                .setAutoCancel(true)
-                .setContentIntent(PendingIntent.getActivity(this, 0, new Intent(), 0))
-
-                .setPriority(NotificationCompat.PRIORITY_MAX);
-
-
-
-
-
-
-
-        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
-        notificationManagerCompat.notify(NOTIFICATION_ID4,builder.build());
     }
 
     private void startTimer() {
@@ -167,8 +113,6 @@ public class ExampleService extends Service {
 
             @Override
             public void onFinish() {
-                Toast.makeText(getApplicationContext(), "!!!!!!!!!!!!! ",
-                        Toast.LENGTH_SHORT).show();
                 finito2();
 
                 mTimerRunning2 = false;

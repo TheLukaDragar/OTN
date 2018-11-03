@@ -15,7 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.dragar.luka.otn.MainActivity">
+        <activity android:name="com.dragar.luka.otn.MainActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden">
+
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service android:name=".ExampleService" />
 
         <meta-data

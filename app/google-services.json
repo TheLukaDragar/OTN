@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "365577835623",
+    "firebase_url": "https://otnfirebaseproject.firebaseio.com",
+    "project_id": "otnfirebaseproject",
+    "storage_bucket": "otnfirebaseproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:365577835623:android:c9df89da67232764",
+        "android_client_info": {
+          "package_name": "com.dragar.luka.otn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "365577835623-9ev9jeei1rsn0hcicrkkahltb1r9va7m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dragar.luka.otn",
+            "certificate_hash": "1973f453984639597191d6d87609c5d797fe3885"
+          }
+        },
+        {
+          "client_id": "365577835623-h9qq428br1kr19rjp12m4b8lrehda8cv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5HvburSYqqd3Tn4KGN7JYvN8skPgFpR8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "365577835623-h9qq428br1kr19rjp12m4b8lrehda8cv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      },
+      "admob_app_id": "ca-app-pub-4526692710511158~4463606073"
+    }
+  ],
+  "configuration_version": "1"
+}

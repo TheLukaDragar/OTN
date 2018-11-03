@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">OTN</string>
+    <string name="paste" />
+    <string name="namen">OTN Message</string>
+    <string name="mojtext" />
+    <string name="idUnser">ca-app-pub-6392795635227509~4651485943</string>
+    <string name="onfinishtoast">sending</string>
+
+</resources>

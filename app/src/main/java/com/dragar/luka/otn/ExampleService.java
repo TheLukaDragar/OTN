@@ -89,9 +89,9 @@ public class ExampleService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,notificationIntent,0);
 
         Notification notification = new NotificationCompat.Builder(this, APP.CHANNEL_ID3)
-                .setContentTitle("new feature soon")
+                .setContentTitle("ticking...")
                 .setContentText(input)
-                .setSmallIcon(R.drawable.ic_android)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
                 .setContentIntent(pendingIntent)
                 .build();
 

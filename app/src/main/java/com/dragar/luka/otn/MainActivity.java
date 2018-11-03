@@ -124,6 +124,8 @@ public class MainActivity extends AppCompatActivity {
                     startTimer();
                     startService();
 
+                    MainActivity.this.finish();
+
                 }
             }
         });
@@ -221,7 +223,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ClipData abc = myClipboard.getPrimaryClip();
-                ClipData.Item item = abc.getItemAt(0);
+                ClipData.Item item = null;
+                if (abc != null) {
+                    item = abc.getItemAt(0);
+                }
 
                 String text = item.getText().toString();
                 ed2.setText(text);

@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                     startTimer();
                     startService();
 
-                    //MainActivity.this.finish();
+                    MainActivity.this.finish();
 
                 }
             }
@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 ed2.clearAnimation();
-                Toast.makeText(MainActivity.this, "aftr", Toast.LENGTH_SHORT).show();
+
 
 
 
@@ -536,12 +536,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    public void onBackPressed () {
-        MainActivity.this.finish();
-      moveTaskToBack (false);
-       saveData();
+    //public void onBackPressed () {
+      //  MainActivity.this.finish();
+     // moveTaskToBack (false);
+     //  saveData();
 
-    }
+   // }
 
 
     public void startService() {

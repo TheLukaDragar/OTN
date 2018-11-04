@@ -5,5 +5,7 @@
     <string name="mojtext" />
     <string name="idUnser">ca-app-pub-6392795635227509~4651485943</string>
     <string name="onfinishtoast">sending</string>
+    <string name="pause">Pause</string>
+    <string name="start">Start</string>
 
 </resources>

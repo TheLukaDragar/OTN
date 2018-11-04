@@ -1,37 +1,31 @@
 package com.dragar.luka.otn;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Editable;
-import android.text.Layout;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -39,30 +33,23 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
 import java.util.Locale;
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String CHANNEL_ID2 ="presonal_notifications2";
-    private static final int NOTIFICATION_ID2 = 2;
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String TEXT = "text";
-    public static final String SECONDS = "seconds";
+    //public static final String SECONDS = "seconds";
     EditText ed2;
     ImageButton  b2;
     Button button;
-    TextView textView;
 
 
     private ClipboardManager myClipboard;
     private static final String CHANNEL_ID = "personal_notifications";
-    private final int NOTIFICATION_ID = 1;
-    private AdView mAdView;
+    public AdView mAdView;
     String text10;
    // String sekunde10;
     // Obtain the FirebaseAnalytics instance.
-
-    private static final long START_TIME_IN_MILLIS = 600000;
 
     private EditText mEditTextInput;
     private TextView mTextViewCountDown;
@@ -85,12 +72,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         loadData();
+        Animation animation =AnimationUtils.loadAnimation(this,R.anim.fadein);
+        final Animation animation2 =AnimationUtils.loadAnimation(this,R.anim.blink_anim);
 
         mEditTextInput = findViewById(R.id.edit_text_input);
         mTextViewCountDown = findViewById(R.id.text_view_countdown);
 
         mButtonSet = findViewById(R.id.button_set);
         mButtonStartPause = findViewById(R.id.button_start_pause);
+        mButtonStartPause.startAnimation(animation);
         mButtonReset = findViewById(R.id.button_reset);
 
         mButtonSet.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                     startTimer();
                     startService();
 
-                    MainActivity.this.finish();
+                    //MainActivity.this.finish();
 
                 }
             }
@@ -191,18 +181,23 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        ed2 = (EditText) findViewById(R.id.edittext);
+        ed2 = findViewById(R.id.edittext);
         ed2.setText(text10);
-        b2 = (ImageButton) findViewById(R.id.imageButton2);
+        ed2.startAnimation(animation2);
+        b2 = findViewById(R.id.imageButton2);
 
         ed2.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                ed2.clearAnimation();
+                Toast.makeText(MainActivity.this, "aftr", Toast.LENGTH_SHORT).show();
+
 
 
             }
@@ -228,7 +223,10 @@ public class MainActivity extends AppCompatActivity {
                     item = abc.getItemAt(0);
                 }
 
-                String text = item.getText().toString();
+                String text = null;
+                if (item != null) {
+                    text = item.getText().toString();
+                }
                 ed2.setText(text);
 
                 Toast.makeText(getApplicationContext(), "Text Pasted",
@@ -327,11 +325,11 @@ public class MainActivity extends AppCompatActivity {
             mEditTextInput.setVisibility(View.INVISIBLE);
             mButtonSet.setVisibility(View.INVISIBLE);
             mButtonReset.setVisibility(View.INVISIBLE);
-            mButtonStartPause.setText("Pause");
+            mButtonStartPause.setText(R.string.pause);
         } else {
             mEditTextInput.setVisibility(View.VISIBLE);
             mButtonSet.setVisibility(View.VISIBLE);
-            mButtonStartPause.setText("Start");
+            mButtonStartPause.setText(R.string.start);
 
             if (mTimeLeftInMillis < 1000) {
                 mButtonStartPause.setVisibility(View.INVISIBLE);
@@ -351,7 +349,9 @@ public class MainActivity extends AppCompatActivity {
         View view = this.getCurrentFocus();
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
         }
     }
 
@@ -454,7 +454,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        EditText text = (EditText)findViewById(R.id.edittext);
+        EditText text = findViewById(R.id.edittext);
         String value = text.getText().toString();
 
         createNotificationChannel();
@@ -477,6 +477,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+        int NOTIFICATION_ID = 1;
         notificationManagerCompat.notify(NOTIFICATION_ID,builder.build());
 
     }
@@ -535,10 +536,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-   // public void onBackPressed () {
-     //   moveTaskToBack (true);
-       // saveData();
-    //}
+    public void onBackPressed () {
+        MainActivity.this.finish();
+      moveTaskToBack (false);
+       saveData();
+
+    }
 
 
     public void startService() {

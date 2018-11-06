@@ -38,10 +38,9 @@
             android:name="firebase_analytics_collection_enabled"
             android:value="true" />
 
-        <activity
-            android:name=".Follow"
-            android:label="@string/title_activity_follow"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".Follow"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

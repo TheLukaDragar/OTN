@@ -11,8 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 
 public class Follow extends AppCompatActivity {
+    private Button b1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,9 +27,11 @@ public class Follow extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
 
-
-
+        final Animation animation5 =AnimationUtils.loadAnimation(this,R.anim.blink_anim);
         setContentView(R.layout.activity_follow);
+        b1 = findViewById(R.id.button3);
+        b1.startAnimation(animation5);
+
 
     }
 

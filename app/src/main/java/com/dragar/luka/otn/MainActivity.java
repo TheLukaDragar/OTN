@@ -8,9 +8,12 @@ import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Point;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
@@ -29,12 +32,17 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
+import java.lang.annotation.Target;
 import java.util.Locale;
+
+
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -68,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +85,26 @@ public class MainActivity extends AppCompatActivity {
         loadData();
         Animation animation =AnimationUtils.loadAnimation(this,R.anim.fadein);
         final Animation animation2 =AnimationUtils.loadAnimation(this,R.anim.blink_anim);
+
+        Boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean("isFirstRun", true);
+
+        if (isFirstRun) {
+            //show start activity
+
+
+
+            tutorial();
+
+        }
+
+
+        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                .putBoolean("isFirstRun", false).apply();
+
+
+
+
 
         mEditTextInput = findViewById(R.id.edit_text_input);
         mTextViewCountDown = findViewById(R.id.text_view_countdown);
@@ -238,6 +267,82 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
+
+
+
+
+       // new MaterialTapTargetPrompt.Builder(this)
+         //       .setTarget(R.id.textView2)
+           //     .setPrimaryText("Primary text")
+
+             //   .show();
+
+
+
+
+    }
+
+    private void tutorial() {
+        new MaterialTapTargetPrompt.Builder(MainActivity.this)
+                .setTarget(R.id.imageButton2)
+                .setPrimaryText("Quick Tutorial")
+                .setSecondaryText("Tap the paste button to paste you note from your clipboard.")
+                .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
+                {
+                    @Override
+                    public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
+                    {
+                        if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED)
+                        { new MaterialTapTargetPrompt.Builder(MainActivity.this)
+                                .setTarget(R.id.button)
+                                .setPrimaryText("Test")
+                                .setSecondaryText("A notification with your text will appear")
+                                .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
+                                {
+                                    @Override
+                                    public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
+                                    {
+                                        if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED)
+                                        {
+                                            new MaterialTapTargetPrompt.Builder(MainActivity.this)
+                                                    .setTarget(R.id.button_start_pause)
+                                                    .setPrimaryText("Start")
+                                                    .setSecondaryText("Start the countdown that you set OTN will close and notify when the time has passed." +
+                                                            "That's it")
+                                                    .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
+                                                    {
+                                                        @Override
+                                                        public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
+                                                        {
+                                                            if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED)
+                                                            {
+
+
+                                                                // User has pressed the prompt target
+                                                            }
+                                                        }
+                                                    })
+                                                    .show();
+
+                                            // User has pressed the prompt target
+                                        }
+                                    }
+                                })
+                                .show();
+                            // User has pressed the prompt target
+                            // User has pressed the prompt target
+
+
+
+                        }
+                    }
+                })
+                .show();
+
+
+
     }
 
     //private void color() {
@@ -249,6 +354,7 @@ public class MainActivity extends AppCompatActivity {
       //  }
 
     //}
+
 
     private void setTime(long milliseconds) {
         mStartTimeInMillis = milliseconds;
